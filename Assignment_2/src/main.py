@@ -13,6 +13,7 @@ from classifiers.bert import BERT
 from classifiers.tfidf import TFIDF
 from classifiers.bertfinetune import FineTunedBERT
 import torch
+import numpy as np
 
 def load_data():
     path = kagglehub.dataset_download("snap/amazon-fine-food-reviews")
@@ -92,6 +93,20 @@ if __name__ == "__main__":
 
             print(f"Fine-tuning BERT model for {name}...")
             model.fit(X_train_vec, y_train)
+        elif name.__contains__("TFIDF") and not name.__contains__("Word2Vec"):
+            print(f"Preprocessing data for {name}...")
+            y_train_bin = np.where(np.array(y_train) == 1, 1, -1)
+            y_test_bin = np.where(np.array(y_test) == 1, 1, -1)
+
+            X_train_clean = model.preprocess(X_train)
+            X_test_clean = model.preprocess(X_test)
+
+            X_train_vec = model.fit_transform(X_train_clean)
+            X_test_vec = model.transform(X_test_clean)
+
+            print(f"Training {name}...")
+
+            model.fit(X_train_vec, y_train_bin)
 
         else:
             print(f"Preprocessing data for {name}...")
@@ -108,6 +123,9 @@ if __name__ == "__main__":
         print(f"Predicting with {name}...")
 
         preds = model.predict(X_test_vec)
+
+        if set(np.unique(preds)) == {-1, 1}:
+            preds = np.where(preds == 1, 1, 0)
 
         preds_dict[name] = preds
 

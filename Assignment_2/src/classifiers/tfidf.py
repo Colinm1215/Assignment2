@@ -71,15 +71,20 @@ class TFIDF:
         idf_vector = np.log((n_docs + 1) / (doc_freq + 1)) + 1
         return idf_vector
 
-    def build_features(self, texts):
-        self.vocab = self.build_vocab(texts)
-        idf = self.compute_idf(texts)
-        tf = self.compute_tf(texts)
-        X = tf * idf
+    def tfidf_norm(self, X):
         norms = np.linalg.norm(X, axis=1, keepdims=True)
         norms[norms == 0] = 1
-        X = X / norms
-        return X
+        return X / norms
+
+    def fit_transform(self, texts):
+        self.vocab = self.build_vocab(texts)
+        tf = self.compute_tf(texts)
+        self.idf_vector = self.compute_idf(texts)
+        return self.tfidf_norm(tf * self.idf_vector)
+
+    def transform(self, texts):
+        tf = self.compute_tf(texts)
+        return self.tfidf_norm(tf * self.idf_vector)
 
     def fit(self, X, y):
         n_samples, n_features = X.shape
@@ -90,7 +95,7 @@ class TFIDF:
             for i in range(n_samples):
                 margin = y[i] * (np.dot(X[i], self.weights) + self.bias)
                 if margin < 1:
-                    self.weights -= self.learning_rate * (2 * self.lambda_param * self.weights - np.dot(X[i], y[i]))
+                    self.weights -= self.learning_rate * (2 * self.lambda_param * self.weights - y[i] * X[i])
                     self.bias += self.learning_rate * y[i]
                 else:
                     self.weights -= self.learning_rate * 2 * self.lambda_param * self.weights

@@ -8,7 +8,6 @@ class BERT:
         self.model_name = "bert-base-uncased"
         self.classifier = pipeline(
                 "sentiment-analysis",
-                model=self.model_name,
                 device=self.device
             )
 
