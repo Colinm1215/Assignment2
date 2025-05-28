@@ -1,0 +1,7 @@
+torch==2.7.0
+transformers==4.39.3
+datasets
+numpy
+accelerate==0.26.1
+python-dotenv
+langchain[openai]

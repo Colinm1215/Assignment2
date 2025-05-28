@@ -1,4 +1,4 @@
-from classifiers.word2vec import Word2Vec
+from models.word2vec import Word2Vec
 import numpy as np
 
 

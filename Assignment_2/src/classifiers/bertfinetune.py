@@ -7,7 +7,7 @@ from transformers import (
 )
 from datasets import Dataset
 import numpy as np
-from classifiers.bert import BERT
+from models.bert import BERT
 
 
 class FineTunedBERT(BERT):

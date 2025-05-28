@@ -1,8 +1,8 @@
 @echo off
 setlocal
 
-set IMAGE_NAME=Assignment_2
-set CONTAINER_NAME=Assignment_2_container
+set IMAGE_NAME=assignment_3
+set CONTAINER_NAME=assignment_3_container
 set WORKDIR=%cd%
 
 docker build --no-cache -t %IMAGE_NAME% .

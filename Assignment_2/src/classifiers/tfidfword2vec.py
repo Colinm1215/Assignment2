@@ -1,8 +1,8 @@
-from classifiers.word2vec import Word2Vec
+from models.word2vec import Word2Vec
 from utils.text import clean_texts
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
-from classifiers.tfidf import TFIDF
+from models.tfidf import TFIDF
 
 
 class TFIDFWord2Vec(Word2Vec):

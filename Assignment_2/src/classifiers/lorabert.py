@@ -1,6 +1,6 @@
 from peft import get_peft_model, LoraConfig, TaskType
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-from classifiers.bertfinetune import FineTunedBERT
+from models.bertfinetune import FineTunedBERT
 
 
 class LoRABERT(FineTunedBERT):

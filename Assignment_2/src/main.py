@@ -5,13 +5,13 @@ from sklearn.utils import resample
 import os
 import nltk
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from classifiers.meanword2vec import MeanWord2Vec
-from classifiers.maxword2vec import MaxWord2Vec
-from classifiers.tfidfword2vec import TFIDFWord2Vec
-from classifiers.lorabert import LoRABERT
-from classifiers.bert import BERT
-from classifiers.tfidf import TFIDF
-from classifiers.bertfinetune import FineTunedBERT
+from models.meanword2vec import MeanWord2Vec
+from models.maxword2vec import MaxWord2Vec
+from models.tfidfword2vec import TFIDFWord2Vec
+from models.lorabert import LoRABERT
+from models.bert import BERT
+from models.tfidf import TFIDF
+from models.bertfinetune import FineTunedBERT
 import torch
 import numpy as np
 
