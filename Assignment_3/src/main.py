@@ -1,4 +1,3 @@
-import pathlib
 from pathlib import Path
 from models.qa_no_answer_model import QA_No_Answer_Model
 from utils import utils
@@ -10,8 +9,7 @@ from transformers import AutoTokenizer
 def main():
     root = Path(__file__).resolve().parent.parent
 
-    models = [
-        "qa_no_answer_model"]
+    models = ["qa_no_answer_model"]
 
     for name in models:
         outputs = root / "outputs" / f"{name}"
@@ -24,6 +22,9 @@ def main():
         else:
             model = QA_No_Answer_Model(max_length=max_len, doc_stride=stride, output_dir=str(outputs / "checkpoints"))
             train, dev = utils.load_squad_dataset(False)
+
+        train = train.select(range((len(train) * 1) // 4))
+        dev = dev.select(range((len(dev) * 1) // 8))
 
         dev_json = root / "outputs" / f"{name}" / "dev.json"
         utils.save_dataset_squadFormat(dev, dev_json)

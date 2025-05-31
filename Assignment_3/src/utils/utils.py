@@ -1,7 +1,6 @@
 import collections
 from pathlib import Path
 import json
-import subprocess
 from datasets import load_dataset
 
 
@@ -15,11 +14,10 @@ def load_squad_dataset(only_answerable: bool = True):
 
     return train, dev
 
-
 def filter_answerable(dataset):
     return dataset.filter(lambda ex: len(ex["answers"]["text"]) > 0)
 
-def _add_context(examples, sample_mapping):
+def add_context(examples, sample_mapping):
     return [examples["context"][i] for i in sample_mapping]
 
 def prepare_train_features(examples, tokenizer, max_length, doc_stride):
@@ -95,7 +93,7 @@ def prepare_eval_features(examples,
 
     sample_mapping = tok.pop("overflow_to_sample_mapping")
     tok["example_id"] = [examples["id"][i] for i in sample_mapping]
-    tok["context"]    = _add_context(examples, sample_mapping)
+    tok["context"]    = add_context(examples, sample_mapping)
 
     new_offsets = []
     for i, offsets in enumerate(tok["offset_mapping"]):
@@ -149,7 +147,7 @@ def run_squad_evaluator(dev_json, pred_json, out_path=None, na_prob_path=None):
         print("Evaluation script not found")
         return None
 
-    print("\nRunning official evaluation …\n")
+    print("\nRunning evaluation …\n")
 
     cmd = [
         "python", str(eval_script),
